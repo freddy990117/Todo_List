@@ -24,7 +24,7 @@ function App() {
       // 是否完成
       isComplete: false,
     };
-
+    // 展開原有的 data，新增使用者輸入的資訊
     setData([...data, todoData]);
   };
 
@@ -36,12 +36,23 @@ function App() {
       </section>
       {/* Card Components 預計會在這邊更換 */}
       <section className="main">
+        {data.map((todo) => (
+          <div className="card">
+            <div className="card-text" key={todo.id}>
+              {todo.text}
+            </div>
+            <button className="remove">
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          </div>
+        ))}
+        {/* 
         <div className="card">
-          {/* <div className="card-text">i will wake up on 5 AM</div>
+          <div className="card-text">i will wake up on 5 AM</div>
           <button className="remove">
             <FontAwesomeIcon icon={faTrash} />
-          </button> */}
-        </div>
+          </button>
+        </div> */}
       </section>
       {/* 輸入與新增的按鈕 */}
       <section className="add-card">
@@ -54,7 +65,9 @@ function App() {
           // 設定監聽事件，追蹤 inputValue
           onChange={(e) => setInputValue(e.target.value)}
         />
-        <button className="add-btn">Add Todo</button>
+        <button className="add-btn" onClick={addFun}>
+          Add Todo
+        </button>
       </section>
     </section>
   );

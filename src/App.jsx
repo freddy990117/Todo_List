@@ -1,9 +1,14 @@
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 function App() {
-  const [card, setAddCard] = useState();
+  // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
+  const [data, setData] = useState([]);
+  // 紀錄使用者輸入的狀態
+  const [input, setInput] = useState("");
+  // 存放 React 唯一值 （畫面 Render 也不改變）
+  // const idRef = useRef(0);
   return (
     <section className="container">
       {/* Title 的文字（Todo Application） */}

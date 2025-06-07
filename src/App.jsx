@@ -1,8 +1,9 @@
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { useRef } from "react";
+
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
   const [data, setData] = useState([]);
@@ -26,7 +27,16 @@ function App() {
     };
     // 展開原有的 data，新增使用者輸入的資訊
     setData([...data, todoData]);
+    
+    // 輸入後清除 input 欄位中的內容  
+    setInputValue("")
   };
+
+  // 偵測鍵盤的行為，當按下 Enter 時執行
+  const handleKeyDown = (e)=>{
+    if (e.key === "Enter")
+      addFun();
+  }
 
   return (
     <section className="container">
@@ -37,8 +47,8 @@ function App() {
       {/* Card Components 預計會在這邊更換 */}
       <section className="main">
         {data.map((todo) => (
-          <div className="card">
-            <div className="card-text" key={todo.id}>
+          <div className="card" key={todo.id}>
+            <div className="card-text" >
               {todo.text}
             </div>
             <button className="remove">
@@ -46,13 +56,7 @@ function App() {
             </button>
           </div>
         ))}
-        {/* 
-        <div className="card">
-          <div className="card-text">i will wake up on 5 AM</div>
-          <button className="remove">
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        </div> */}
+   
       </section>
       {/* 輸入與新增的按鈕 */}
       <section className="add-card">
@@ -64,8 +68,10 @@ function App() {
           value={inputValue}
           // 設定監聽事件，追蹤 inputValue
           onChange={(e) => setInputValue(e.target.value)}
+          // 監測鍵盤的輸入
+          onKeyDown={handleKeyDown}
         />
-        <button className="add-btn" onClick={addFun}>
+        <button className="add-btn" onClick={addFun} >
           Add Todo
         </button>
       </section>

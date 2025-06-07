@@ -37,7 +37,13 @@ function App() {
     if (e.key === "Enter")
       addFun();
   }
-
+  // 移除行為 (依照 id 來移除 DOM 元素)
+  const removeCard = (id) => {
+    // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 室因為改的是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
+    const newData = data.filter((item) => item.id !== id);
+     setData(newData);
+  }
+  
   return (
     <section className="container">
       {/* Title 的文字（Todo Application） */}
@@ -51,7 +57,7 @@ function App() {
             <div className="card-text" >
               {todo.text}
             </div>
-            <button className="remove">
+            <button className="remove" onClick={()=>{removeCard(todo.id)}}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>

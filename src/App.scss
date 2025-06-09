@@ -6,7 +6,6 @@ body {
   justify-content: center;
   background-color: #f9f9f9;
   transition: all ease-in-out 0.5s;
-
   &.highlight {
     background-color: #121212;
   }
@@ -98,6 +97,21 @@ body {
           color: white;
           border: none;
         }
+      }
+    }
+    .changeColor {
+      position: absolute;
+      border: none;
+      color: #121212;
+      background-color: #f9f9f9;
+      font-size: 2rem;
+      padding: 0.5rem;
+      right: 1%;
+      top: 2%;
+      transition: all ease-in-out 1s;
+      &.highlight {
+        color: #f9f9f9;
+        background-color: #121212;
       }
     }
   }

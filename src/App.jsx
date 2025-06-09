@@ -11,7 +11,8 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   // 存放 React 唯一值 （畫面 Render 也不改變）
   const idRef = useRef(0);
-
+  // 存放 變更顏色 的狀態
+  const [changeColor, setChangeColor] = useState(false);
   // 設定 新增 Todo List 的 function
   const addFun = () => {
     // 如果 inputValue 是空值的話，返回空值
@@ -42,24 +43,31 @@ function App() {
     const newData = data.filter((item) => item.id !== id);
     setData(newData);
   };
-  // 變更顏色的按鈕
-  const changeColor = ()=>{
-    
-  }
+  // 變更顏色按鈕的行為
+  const colorChange = () => {
+    setChangeColor(true);
+  };
 
   return (
-    <section className="container">
+    <section className={`container ${changeColor ? "highlight" : ""}`}>
       {/* Title 的文字（Todo Application） */}
       <section className="title">
-        <h1 className="title-text">Todo Application</h1>
+        <h1 className={`title-text ${changeColor ? "highlight" : ""}`}>
+          Todo Application
+        </h1>
       </section>
       {/* Card Components 預計會在這邊更換 */}
       <section className="main">
         {data.map((todo) => (
-          <div className="card" key={todo.id}>
-            <div className="card-text">{todo.text}</div>
+          <div
+            className={`card ${changeColor ? "highlight" : ""}`}
+            key={todo.id}
+          >
+            <div className={`card-text ${changeColor ? "highlight" : ""}`}>
+              {todo.text}
+            </div>
             <button
-              className="remove"
+              className={`remove ${changeColor ? "highlight" : ""}`}
               onClick={() => {
                 removeCard(todo.id);
               }}
@@ -74,7 +82,7 @@ function App() {
         <input
           type="text"
           placeholder="Add somthing......."
-          className="todo-input"
+          className={`todo-input ${changeColor ? "highlight" : ""}`}
           // 綁定 value 的值是使用者輸入的值
           value={inputValue}
           // 設定監聽事件，追蹤 inputValue
@@ -82,11 +90,17 @@ function App() {
           // 監測鍵盤的輸入
           onKeyDown={handleKeyDown}
         />
-        <button className="add-btn" onClick={addFun}>
+        <button
+          className={`add-btn ${changeColor ? "highlight" : ""}`}
+          onClick={addFun}
+        >
           Add Todo
         </button>
       </section>
-      <button className="changeColor">
+      <button
+        className={`changeColor ${changeColor ? "highlight" : ""}`}
+        onClick={colorChange}
+      >
         <FontAwesomeIcon icon={faPalette} />
       </button>
     </section>

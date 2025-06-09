@@ -5,6 +5,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9f9f9;
+}
+body .container.highlight {
+  background-color: #121212;
 }
 body .container .title .title-text {
   font-weight: bolder;
@@ -12,6 +16,13 @@ body .container .title .title-text {
   margin: 1rem;
   /* 漸層背景 */
   background: linear-gradient(to right, #2e2e2e, #7a7a7a, #d1d1d1);
+  -webkit-background-clip: text;
+          background-clip: text;
+  /* 把文字本身設為透明，這樣就能看到背景了 */
+  color: transparent;
+}
+body .container .title .title-text.highlight {
+  background: linear-gradient(to right, #66ffe8, #00c7b1, #008c85);
   -webkit-background-clip: text;
           background-clip: text;
   /* 把文字本身設為透明，這樣就能看到背景了 */
@@ -30,9 +41,15 @@ body .container .main .card {
   margin: 0.5rem;
   border: 2px solid green;
 }
+body .container .main .card.highlight {
+  border: 2px solid #2e2e2e;
+}
 body .container .main .card .card-text {
   font-size: 1.5rem;
   padding: 1rem;
+}
+body .container .main .card .card-text.highlight {
+  color: #f0f0f0;
 }
 body .container .main .card .remove {
   margin-right: 1rem;
@@ -43,6 +60,11 @@ body .container .main .card .remove {
   background-color: transparent;
   border: 1px solid gray;
   cursor: pointer;
+}
+body .container .main .card .remove.highlight {
+  background-color: #c33a3a;
+  color: white;
+  border: none;
 }
 body .container .add-card {
   margin-top: 1rem;
@@ -57,4 +79,9 @@ body .container .add-card .add-btn {
   padding: 1rem;
   font-size: 1.2rem;
   cursor: pointer;
+}
+body .container .add-card .add-btn.highlight {
+  background-color: #00c7b1;
+  color: white;
+  border: none;
 }/*# sourceMappingURL=App.css.map */

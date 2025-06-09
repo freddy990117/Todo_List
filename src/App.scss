@@ -4,7 +4,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9f9f9;
   .container {
+    &.highlight {
+      background-color: #121212;
+    }
     .title {
       .title-text {
         font-weight: bolder;
@@ -15,6 +19,12 @@ body {
         background-clip: text;
         /* 把文字本身設為透明，這樣就能看到背景了 */
         color: transparent;
+        &.highlight {
+          background: linear-gradient(to right, #66ffe8, #00c7b1, #008c85);
+          background-clip: text;
+          /* 把文字本身設為透明，這樣就能看到背景了 */
+          color: transparent;
+        }
       }
     }
     .main {
@@ -28,9 +38,15 @@ body {
         height: 10vh;
         margin: 0.5rem;
         border: 2px solid green;
+        &.highlight {
+          border: 2px solid #2e2e2e;
+        }
         .card-text {
           font-size: 1.5rem;
           padding: 1rem;
+          &.highlight {
+            color: #f0f0f0;
+          }
         }
         .remove {
           margin-right: 1rem;
@@ -41,6 +57,11 @@ body {
           background-color: transparent;
           border: 1px solid gray;
           cursor: pointer;
+          &.highlight {
+            background-color: #c33a3a;
+            color: white;
+            border: none;
+          }
         }
       }
     }
@@ -56,6 +77,11 @@ body {
         padding: 1rem;
         font-size: 1.2rem;
         cursor: pointer;
+        &.highlight {
+          background-color: #00c7b1;
+          color: white;
+          border: none;
+        }
       }
     }
   }

@@ -1,6 +1,6 @@
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPalette } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useRef } from "react";
 
@@ -27,23 +27,26 @@ function App() {
     };
     // 展開原有的 data，新增使用者輸入的資訊
     setData([...data, todoData]);
-    
-    // 輸入後清除 input 欄位中的內容  
-    setInputValue("")
+
+    // 輸入後清除 input 欄位中的內容
+    setInputValue("");
   };
 
   // 偵測鍵盤的行為，當按下 Enter 時執行
-  const handleKeyDown = (e)=>{
-    if (e.key === "Enter")
-      addFun();
-  }
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") addFun();
+  };
   // 移除行為 (依照 id 來移除 DOM 元素)
   const removeCard = (id) => {
     // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 室因為改的是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
     const newData = data.filter((item) => item.id !== id);
-     setData(newData);
+    setData(newData);
+  };
+  // 變更顏色的按鈕
+  const changeColor = ()=>{
+    
   }
-  
+
   return (
     <section className="container">
       {/* Title 的文字（Todo Application） */}
@@ -54,15 +57,17 @@ function App() {
       <section className="main">
         {data.map((todo) => (
           <div className="card" key={todo.id}>
-            <div className="card-text" >
-              {todo.text}
-            </div>
-            <button className="remove" onClick={()=>{removeCard(todo.id)}}>
+            <div className="card-text">{todo.text}</div>
+            <button
+              className="remove"
+              onClick={() => {
+                removeCard(todo.id);
+              }}
+            >
               <FontAwesomeIcon icon={faTrash} />
             </button>
           </div>
         ))}
-   
       </section>
       {/* 輸入與新增的按鈕 */}
       <section className="add-card">
@@ -77,10 +82,13 @@ function App() {
           // 監測鍵盤的輸入
           onKeyDown={handleKeyDown}
         />
-        <button className="add-btn" onClick={addFun} >
+        <button className="add-btn" onClick={addFun}>
           Add Todo
         </button>
       </section>
+      <button className="changeColor">
+        <FontAwesomeIcon icon={faPalette} />
+      </button>
     </section>
   );
 }

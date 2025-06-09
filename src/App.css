@@ -6,6 +6,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #f9f9f9;
+  transition: all ease-in-out 0.5s;
 }
 body.highlight {
   background-color: #121212;
@@ -47,6 +48,7 @@ body .container .main .card.highlight {
 body .container .main .card .card-text {
   font-size: 1.5rem;
   padding: 1rem;
+  transition: all ease-in-out 0.5s;
 }
 body .container .main .card .card-text.highlight {
   color: #f0f0f0;
@@ -60,6 +62,7 @@ body .container .main .card .remove {
   background-color: transparent;
   border: 1px solid gray;
   cursor: pointer;
+  transition: all ease-in-out 0.5s;
 }
 body .container .main .card .remove.highlight {
   background-color: #c33a3a;
@@ -74,11 +77,25 @@ body .container .add-card .todo-input {
   font-size: 1.2rem;
   width: 70%;
   margin-right: 1rem;
+  transition: all ease-in-out 0.5s;
+}
+body .container .add-card .todo-input.highlight {
+  background-color: #2e2e2e;
+  border: none;
+  color: white;
+  outline: none;
+}
+body .container .add-card .todo-input.highlight::-moz-placeholder {
+  color: white;
+}
+body .container .add-card .todo-input.highlight::placeholder {
+  color: white;
 }
 body .container .add-card .add-btn {
   padding: 1rem;
   font-size: 1.2rem;
   cursor: pointer;
+  transition: all ease-in-out 0.5s;
 }
 body .container .add-card .add-btn.highlight {
   background-color: #00c7b1;

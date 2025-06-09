@@ -12,12 +12,11 @@ function App() {
   const idRef = useRef(0);
   // 存放 變更顏色 的狀態
   const [changeColor, setChangeColor] = useState(false);
-  // JSX 無法辨識到 body DOM．因此建立一個狀態專門更改它
+  // JSX 無法辨識到 body DOM
   const [highlight, setHighlight] = useState(false);
   useEffect(() => {
     document.body.classList.toggle("highlight", highlight);
   }, [highlight]);
-
 
   // 設定 新增 Todo List 的 function
   const addFun = () => {
@@ -107,7 +106,7 @@ function App() {
         className={`changeColor ${changeColor ? "highlight" : ""}`}
         onClick={() => {
           setHighlight((prev) => !prev);
-          setChangeColor(true);
+          setChangeColor((prev) => !prev);
         }}
       >
         <FontAwesomeIcon icon={faPalette} />

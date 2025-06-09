@@ -1,8 +1,7 @@
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPalette } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
@@ -13,6 +12,13 @@ function App() {
   const idRef = useRef(0);
   // 存放 變更顏色 的狀態
   const [changeColor, setChangeColor] = useState(false);
+  // JSX 無法辨識到 body DOM．因此建立一個狀態專門更改它
+  const [highlight, setHighlight] = useState(false);
+  useEffect(() => {
+    document.body.classList.toggle("highlight", highlight);
+  }, [highlight]);
+
+
   // 設定 新增 Todo List 的 function
   const addFun = () => {
     // 如果 inputValue 是空值的話，返回空值
@@ -49,7 +55,7 @@ function App() {
   };
 
   return (
-    <section className={`container ${changeColor ? "highlight" : ""}`}>
+    <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
       <section className="title">
         <h1 className={`title-text ${changeColor ? "highlight" : ""}`}>
@@ -99,7 +105,10 @@ function App() {
       </section>
       <button
         className={`changeColor ${changeColor ? "highlight" : ""}`}
-        onClick={colorChange}
+        onClick={() => {
+          setHighlight((prev) => !prev);
+          setChangeColor(true);
+        }}
       >
         <FontAwesomeIcon icon={faPalette} />
       </button>

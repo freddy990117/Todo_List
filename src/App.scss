@@ -5,10 +5,10 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #f9f9f9;
+  &.highlight {
+    background-color: #121212;
+  }
   .container {
-    &.highlight {
-      background-color: #121212;
-    }
     .title {
       .title-text {
         font-weight: bolder;

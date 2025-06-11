@@ -5,7 +5,7 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #f9f9f9;
-  transition: all ease-in-out 0.5s;
+  transition: background-color ease-in-out 0.5s;
   &.highlight {
     background-color: #121212;
   }

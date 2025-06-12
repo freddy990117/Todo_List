@@ -1,7 +1,13 @@
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPalette } from "@fortawesome/free-solid-svg-icons";
-import { useState, useRef, useEffect } from "react";
+import {
+  faTrash,
+  faPalette,
+  faPencil,
+  faCheck,
+  faEllipsis,
+} from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef, useEffect, use } from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
@@ -12,12 +18,22 @@ function App() {
   const idRef = useRef(0);
   // 存放 變更顏色 的狀態
   const [changeColor, setChangeColor] = useState(false);
-  // JSX 無法辨識到 body DOM
+  // 存放 背景顏色的 DOM 元素
   const [highlight, setHighlight] = useState(false);
+  // JSX 無法辨識到 body DOM，所以使用 JS 的方式找到 body 的元素並賦值
   useEffect(() => {
     document.body.classList.toggle("highlight", highlight);
   }, [highlight]);
-
+  // 存放 識別ID 的狀態，預設無狀態 （點選編輯的按鈕時觸發）
+  const [editID, setEditID] = useState(null);
+  // 存放 編輯後的文字 狀態 （點選編輯的按鈕時觸發）
+  const [editText, setEditText] = useState("");
+  // 存放 完成 的狀態
+  const [check, setCheck] = useState(null);
+  // 存放 移除 的狀態
+  const [remove, setRemove] = useState();
+  // 存放 點擊表單後開啟 的狀態
+  const [ellipsis, setShowEllipsis] = useState(null);
   // 設定 新增 Todo List 的 function
   const addFun = () => {
     // 如果 inputValue 是空值的話，返回空值
@@ -48,10 +64,6 @@ function App() {
     const newData = data.filter((item) => item.id !== id);
     setData(newData);
   };
-  // 變更顏色按鈕的行為
-  const colorChange = () => {
-    setChangeColor(true);
-  };
 
   return (
     <section className={"container"}>
@@ -72,13 +84,34 @@ function App() {
               {todo.text}
             </div>
             <button
-              className={`remove ${changeColor ? "highlight" : ""}`}
+              className={`Ellipsis ${changeColor ? "highlight" : ""}`}
               onClick={() => {
-                removeCard(todo.id);
+                setShowEllipsis(todo.id);
               }}
             >
-              <FontAwesomeIcon icon={faTrash} />
+              <FontAwesomeIcon icon={faEllipsis} />
             </button>
+            {ellipsis === todo.id && (
+              <div className="ellipsisMenu show">
+                <button>
+                  <FontAwesomeIcon icon={faPencil} />
+                </button>
+                <button
+                  onClick={() => {
+                    setCheck(check(true));
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCheck} />
+                </button>
+                <button
+                  onClick={() => {
+                    setRemove(remove(true));
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </section>
@@ -102,6 +135,7 @@ function App() {
           Add Todo
         </button>
       </section>
+      {/* 轉換顏色的按鈕 */}
       <button
         className={`changeColor ${changeColor ? "highlight" : ""}`}
         onClick={() => {

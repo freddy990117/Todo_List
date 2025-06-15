@@ -35,6 +35,7 @@ body .container .main {
   transform: translateX(-10%);
 }
 body .container .main .card {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,6 +69,24 @@ body .container .main .card .Ellipsis.highlight {
   background-color: #c33a3a;
   color: white;
   border: none;
+}
+body .container .main .card .ellipsisMenu {
+  position: absolute;
+  right: -8%;
+  top: -120%;
+  transform: translateY(-20px);
+  transition: all ease-in 0.5s;
+}
+body .container .main .card .ellipsisMenu.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+body .container .main .card .ellipsisMenu button {
+  border: 1px solid black;
+  display: flex;
+  width: 3rem;
+  font-size: 1rem;
+  padding: 1rem;
 }
 body .container .add-card {
   margin-top: 1rem;

@@ -34,6 +34,8 @@ function App() {
   const [remove, setRemove] = useState();
   // 存放 點擊表單後開啟 的狀態
   const [ellipsis, setShowEllipsis] = useState(null);
+  // 存放 點選表單 的狀態
+  const [show, setShow] = useState(false);
   // 設定 新增 Todo List 的 function
   const addFun = () => {
     // 如果 inputValue 是空值的話，返回空值
@@ -86,26 +88,28 @@ function App() {
             <button
               className={`Ellipsis ${changeColor ? "highlight" : ""}`}
               onClick={() => {
-                setShowEllipsis(todo.id);
+                // 控制表單的開啟，如果 === 表單的 id 開啟，如果已有，則關閉。
+                setShowEllipsis((prev) => (prev === todo.id ? null : todo.id));
               }}
             >
               <FontAwesomeIcon icon={faEllipsis} />
             </button>
+            {/* 當 todo.id === 目前要顯示的 ellipsis 的表單時，才會渲染版單 */}
             {ellipsis === todo.id && (
-              <div className="ellipsisMenu show">
+              <div className={`ellipsisMenu ${show ? "show" : ""}`}>
                 <button>
                   <FontAwesomeIcon icon={faPencil} />
                 </button>
                 <button
                   onClick={() => {
-                    setCheck(check(true));
+                    setCheck(true);
                   }}
                 >
                   <FontAwesomeIcon icon={faCheck} />
                 </button>
                 <button
                   onClick={() => {
-                    setRemove(remove(true));
+                    setRemove(true);
                   }}
                 >
                   <FontAwesomeIcon icon={faTrash} />

@@ -34,6 +34,7 @@ body {
       width: 120%;
       transform: translateX(-10%);
       .card {
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -66,8 +67,25 @@ body {
             color: white;
             border: none;
           }
-          .ellipsisMenu {
+        }
+        .ellipsisMenu {
+          position: absolute;
+          right: -8%;
+          top: -120%;
+          transform: translateY(
+            -20px
+          ); // ！!todo 先預設位置，稍後設定好邏輯之後，在更改位置
+          transition: all ease-in 0.5s;
+          &.show {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          button {
+            border: 1px solid black;
+            display: flex;
+            width: 3rem;
             font-size: 1rem;
+            padding: 1rem;
           }
         }
       }

@@ -56,10 +56,15 @@ body .container .main .card .card-text {
 body .container .main .card .card-text.highlight {
   color: #f0f0f0;
 }
-body .container .main .card .card-text.check {
+body .container .main .card .card-text.highlight.check {
   text-decoration: line-through;
   color: lightgray;
-  opacity: 0.2;
+  opacity: 0.3;
+}
+body .container .main .card .card-text.check {
+  text-decoration: line-through;
+  color: black;
+  opacity: 0.3;
 }
 body .container .main .card .Ellipsis {
   margin-right: 1rem;

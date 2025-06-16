@@ -52,11 +52,16 @@ body {
           border: none;
           &.highlight {
             color: #f0f0f0;
+            &.check {
+              text-decoration: line-through; // 加入刪除線
+              color: lightgray;
+              opacity: 0.3;
+            }
           }
           &.check {
             text-decoration: line-through; // 加入刪除線
-            color: lightgray;
-            opacity: 0.2;
+            color: black;
+            opacity: 0.3;
           }
         }
         .Ellipsis {

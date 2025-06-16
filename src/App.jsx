@@ -7,7 +7,7 @@ import {
   faCheck,
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useRef, useEffect, use } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
@@ -25,17 +25,15 @@ function App() {
     document.body.classList.toggle("highlight", highlight);
   }, [highlight]);
   // 存放 識別ID 的狀態，預設無狀態 （點選編輯的按鈕時觸發）
-  const [editID, setEditID] = useState(null);
+  // const [editID, setEditID] = useState(null);
   // 存放 編輯後的文字 狀態 （點選編輯的按鈕時觸發）
-  const [editText, setEditText] = useState("");
+  // const [editText, setEditText] = useState("");
   // 存放 完成 的狀態
   const [check, setCheck] = useState(null);
-  // 存放 移除 的狀態
-  const [remove, setRemove] = useState();
   // 存放 點擊表單後開啟 的狀態
   const [ellipsis, setShowEllipsis] = useState(null);
   // 存放 點選表單 的狀態
-  const [show, setShow] = useState(false);
+  const show = false;
   // 設定 新增 Todo List 的 function
   const addFun = () => {
     // 如果 inputValue 是空值的話，返回空值
@@ -114,7 +112,7 @@ function App() {
                 </button>
                 <button
                   onClick={() => {
-                    setRemove(true);
+                    removeCard(todo.id);
                   }}
                 >
                   <FontAwesomeIcon icon={faTrash} />

@@ -46,10 +46,17 @@ body {
         }
         .card-text {
           font-size: 1.5rem;
-          padding: 1rem;
-          transition: all ease-in-out 0.5s;
+          opacity: 1;
+          transition: all ease-in-out 0.3s;
+          margin-left: 1rem;
+          border: none;
           &.highlight {
             color: #f0f0f0;
+          }
+          &.check {
+            text-decoration: line-through; // 加入刪除線
+            color: lightgray;
+            opacity: 0.2;
           }
         }
         .Ellipsis {

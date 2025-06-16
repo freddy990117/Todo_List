@@ -62,7 +62,7 @@ function App() {
   };
   // 移除行為 (依照 id 來移除 DOM 元素)
   const removeCard = (id) => {
-    // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 室因為改的是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
+    // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 是因為改的會是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
     const newData = data.filter((item) => item.id !== id);
     setData(newData);
   };
@@ -82,7 +82,11 @@ function App() {
             className={`card ${changeColor ? "highlight" : ""}`}
             key={todo.id}
           >
-            <div className={`card-text ${changeColor ? "highlight" : ""}`}>
+            <div
+              className={`card-text ${changeColor ? "highlight" : ""} ${
+                check === todo.id ? "check" : ""
+              }`}
+            >
               {todo.text}
             </div>
             <button
@@ -102,7 +106,8 @@ function App() {
                 </button>
                 <button
                   onClick={() => {
-                    setCheck(true);
+                    // 當「點選的 ID 相同時，則取消勾選（null）」
+                    setCheck((prev) => (prev === todo.id ? null : todo.id));
                   }}
                 >
                   <FontAwesomeIcon icon={faCheck} />

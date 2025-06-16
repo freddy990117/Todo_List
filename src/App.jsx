@@ -58,6 +58,7 @@ function App() {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") addFun();
   };
+
   // 移除行為 (依照 id 來移除 DOM 元素)
   const removeCard = (id) => {
     // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 是因為改的會是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
@@ -73,20 +74,24 @@ function App() {
           Todo Application
         </h1>
       </section>
-      {/* Card Components 預計會在這邊更換 */}
+      {/* Card Components  */}
       <section className="main">
         {data.map((todo) => (
           <div
+            // Card 的邊框
             className={`card ${changeColor ? "highlight" : ""}`}
             key={todo.id}
           >
             <div
+              // Card 內文的設定
               className={`card-text ${changeColor ? "highlight" : ""} ${
                 check === todo.id ? "check" : ""
               }`}
             >
               {todo.text}
             </div>
+
+            {/* 延伸項目的按鍵，點選後開啟延伸項目*/}
             <button
               className={`Ellipsis ${changeColor ? "highlight" : ""}`}
               onClick={() => {
@@ -96,12 +101,16 @@ function App() {
             >
               <FontAwesomeIcon icon={faEllipsis} />
             </button>
+
             {/* 當 todo.id === 目前要顯示的 ellipsis 的表單時，才會渲染版單 */}
             {ellipsis === todo.id && (
               <div className={`ellipsisMenu ${show ? "show" : ""}`}>
+                {/* 編輯按鈕 */}
                 <button>
                   <FontAwesomeIcon icon={faPencil} />
                 </button>
+                {/* 勾選按鈕 */}
+
                 <button
                   onClick={() => {
                     // 當「點選的 ID 相同時，則取消勾選（null）」
@@ -110,6 +119,8 @@ function App() {
                 >
                   <FontAwesomeIcon icon={faCheck} />
                 </button>
+                {/* 刪除按鈕 */}
+
                 <button
                   onClick={() => {
                     removeCard(todo.id);

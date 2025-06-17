@@ -29,7 +29,7 @@ function App() {
   // 存放 編輯後的文字 狀態 （點選編輯的按鈕時觸發）
   // const [editText, setEditText] = useState("");
   // 存放 完成 的狀態
-  const [check, setCheck] = useState(null);
+  const [check, setCheck] = useState([]);
   // 存放 點擊表單後開啟 的狀態
   const [ellipsis, setShowEllipsis] = useState(null);
   // 存放 點選表單 的狀態
@@ -85,7 +85,8 @@ function App() {
             <div
               // Card 內文的設定
               className={`card-text ${changeColor ? "highlight" : ""} ${
-                check === todo.id ? "check" : ""
+                // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
+                check.includes(todo.id) ? "check" : ""
               }`}
             >
               {todo.text}
@@ -113,8 +114,14 @@ function App() {
 
                 <button
                   onClick={() => {
-                    // 當「點選的 ID 相同時，則取消勾選（null）」
-                    setCheck((prev) => (prev === todo.id ? null : todo.id));
+                    setCheck((prev) =>
+                      // 檢查目前的 check 清單中，是否已經包含被點擊的這一筆 todo.id
+                      prev.includes(todo.id)
+                        ? // 如果有：代表使用者是在取消勾選
+                          prev.filter((id) => id !== todo.id)
+                        : // 如果沒有：代表使用者要勾選這一筆, 把 todo.id 加入到 check 陣列中，並回傳新的陣列
+                          [...prev, todo.id]
+                    );
                   }}
                 >
                   <FontAwesomeIcon icon={faCheck} />

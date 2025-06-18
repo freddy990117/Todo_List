@@ -25,9 +25,9 @@ function App() {
     document.body.classList.toggle("highlight", highlight);
   }, [highlight]);
   // 存放 識別ID 的狀態，預設無狀態 （點選編輯的按鈕時觸發）
-  // const [editID, setEditID] = useState(null);
+  const [editID, setEditID] = useState(null);
   // 存放 編輯後的文字 狀態 （點選編輯的按鈕時觸發）
-  // const [editText, setEditText] = useState("");
+  const [editText, setEditText] = useState("");
   // 存放 完成 的狀態
   const [check, setCheck] = useState([]);
   // 存放 點擊表單後開啟 的狀態
@@ -66,6 +66,9 @@ function App() {
     setData(newData);
   };
 
+  useEffect(() => {
+    console.log("hello");
+  }, [editID]);
   return (
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
@@ -88,6 +91,9 @@ function App() {
                 // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
                 check.includes(todo.id) ? "check" : ""
               }`}
+              onChange={() => {
+                setEditText(todo.text);
+              }}
             >
               {todo.text}
             </div>
@@ -96,7 +102,7 @@ function App() {
             <button
               className={`Ellipsis ${changeColor ? "highlight" : ""}`}
               onClick={() => {
-                // 控制表單的開啟，如果 === 表單的 id 開啟，如果已有，則關閉。
+                // 控制表單的開啟，如果 === 表單的 id 則開啟，如果已有，則關閉。
                 setShowEllipsis((prev) => (prev === todo.id ? null : todo.id));
               }}
             >
@@ -107,7 +113,11 @@ function App() {
             {ellipsis === todo.id && (
               <div className={`ellipsisMenu ${show ? "show" : ""}`}>
                 {/* 編輯按鈕 */}
-                <button>
+                <button
+                  onClick={() => {
+                    setEditID(todo.id);
+                  }}
+                >
                   <FontAwesomeIcon icon={faPencil} />
                 </button>
                 {/* 勾選按鈕 */}
@@ -153,6 +163,7 @@ function App() {
           // 監測鍵盤的輸入
           onKeyDown={handleKeyDown}
         />
+        {/* Add todo button */}
         <button
           className={`add-btn ${changeColor ? "highlight" : ""}`}
           onClick={addFun}

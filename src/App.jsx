@@ -66,9 +66,6 @@ function App() {
     setData(newData);
   };
 
-  useEffect(() => {
-    console.log("hello");
-  }, [editID]);
   return (
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
@@ -82,21 +79,48 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
-            className={`card ${changeColor ? "highlight" : ""}`}
+            className={`card${changeColor ? "highlight" : ""}`}
             key={todo.id}
           >
-            <div
-              // Card 內文的設定
-              className={`card-text ${changeColor ? "highlight" : ""} ${
-                // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
-                check.includes(todo.id) ? "check" : ""
-              }`}
-              onChange={() => {
-                setEditText(todo.text);
-              }}
-            >
-              {todo.text}
-            </div>
+            {/* 如果 ID 相符的話，就執行更改的邏輯 */}
+            {editID === todo.id ? (
+              <input
+                id={todo.id}
+                className="input"
+                //內容是綁定 div 中的文字
+                value={editText}
+                // 改變的文字榜定到 editText 中狀態
+                onChange={(e) => setEditText(e.target.value)}
+                // 偵測鍵盤的行為，當按下 Enter 時儲存編輯內容，並更新對應的 todo
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    // 建立一個新的 array，透過 map 對每一比資料比對
+                    const updateEdit = data.map((item) =>
+                      // 如果 item.id 與正在編輯的 todo.id 相同的話，就用編輯後的內容取代原本的文字
+                      item.id === todo.id ? { ...item, text: editText } : item
+                    );
+                    // 將資料返回初始值，並回傳資料給 Data
+                    setEditText("");
+                    setEditID(null);
+                    setData(updateEdit);
+                  }
+                }}
+              />
+            ) : (
+              // ID 沒有相符的話，就不會更改其內容
+              <div
+                // Card 內文的設定
+                className={`card-text ${changeColor ? "highlight" : ""} ${
+                  // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
+                  check.includes(todo.id) ? "check" : ""
+                }`}
+                onChange={() => {
+                  setEditText(todo.text);
+                }}
+              >
+                {todo.text}
+              </div>
+            )}
 
             {/* 延伸項目的按鍵，點選後開啟延伸項目*/}
             <button

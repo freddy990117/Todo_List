@@ -16,6 +16,8 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   // 存放 React 唯一值 （畫面 Render 也不改變）
   const idRef = useRef(0);
+  // 存放 輸入 的唯一值
+  const inputRef = useRef(null);
   // 存放 變更顏色 的狀態
   const [changeColor, setChangeColor] = useState(false);
   // 存放 背景顏色的 DOM 元素
@@ -66,6 +68,13 @@ function App() {
     setData(newData);
   };
 
+  // 設定按下編輯按鈕時，自動跳到輸入框 (不用在自己點))
+  useEffect(() => {
+    if (editID !== null && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editID]);
+
   return (
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
@@ -105,6 +114,9 @@ function App() {
                     setData(updateEdit);
                   }
                 }}
+                // 綁定 ref 狀態
+                ref={inputRef}
+                placeholder="按下 Enter 自動儲存....."
               />
             ) : (
               // ID 沒有相符的話，就不會更改其內容
@@ -140,6 +152,7 @@ function App() {
                 <button
                   onClick={() => {
                     setEditID(todo.id);
+                    setShowEllipsis(false);
                   }}
                 >
                   <FontAwesomeIcon icon={faPencil} />
@@ -165,6 +178,7 @@ function App() {
                 <button
                   onClick={() => {
                     removeCard(todo.id);
+                    setShowEllipsis(false);
                   }}
                 >
                   <FontAwesomeIcon icon={faTrash} />

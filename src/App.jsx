@@ -17,7 +17,7 @@ function App() {
   // 存放 React 唯一值 （畫面 Render 也不改變）
   const idRef = useRef(0);
   // 存放 輸入 的唯一值
-  const inputRef = useRef(null);
+  const editInputRef = useRef(null);
   // 存放 變更顏色 的狀態
   const [changeColor, setChangeColor] = useState(false);
   // 存放 背景顏色的 DOM 元素
@@ -70,11 +70,11 @@ function App() {
 
   // 設定按下編輯按鈕時，自動跳到輸入框 (不用在自己點))
   useEffect(() => {
-    if (editID !== null && inputRef.current) {
-      inputRef.current.focus();
+    if (editID !== null && editInputRef.current) {
+      editInputRef.current.focus();
     }
   }, [editID]);
-
+  
   return (
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
@@ -88,14 +88,15 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
-            className={`card${changeColor ? "highlight" : ""}`}
+            className={`card ${changeColor ? "highlight" : ""}`}
             key={todo.id}
           >
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
             {editID === todo.id ? (
               <input
                 id={todo.id}
-                className="input"
+                // 跟著背景顏色一起更改
+                className={`input ${changeColor ? "highlight" : ""}`}
                 //內容是綁定 div 中的文字
                 value={editText}
                 // 改變的文字榜定到 editText 中狀態
@@ -108,14 +109,16 @@ function App() {
                       // 如果 item.id 與正在編輯的 todo.id 相同的話，就用編輯後的內容取代原本的文字
                       item.id === todo.id ? { ...item, text: editText } : item
                     );
-                    // 將資料返回初始值，並回傳資料給 Data
+                    // 設定輸入值為空值，再返回初始的 ID
                     setEditText("");
+                    // 將資料返回初始值，並回傳資料給 Data
                     setEditID(null);
                     setData(updateEdit);
+                    setCheck([]);
                   }
                 }}
                 // 綁定 ref 狀態
-                ref={inputRef}
+                ref={editInputRef}
                 placeholder="按下 Enter 自動儲存....."
               />
             ) : (
@@ -126,9 +129,6 @@ function App() {
                   // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
                   check.includes(todo.id) ? "check" : ""
                 }`}
-                onChange={() => {
-                  setEditText(todo.text);
-                }}
               >
                 {todo.text}
               </div>
@@ -151,7 +151,7 @@ function App() {
                 {/* 編輯按鈕 */}
                 <button
                   onClick={() => {
-                    setEditID(todo.id);
+                    handleEdit(todo.id)
                     setShowEllipsis(false);
                   }}
                 >

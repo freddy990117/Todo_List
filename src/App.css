@@ -43,13 +43,17 @@ body .container .main .card {
   margin: 0.5rem;
   border: 2px solid green;
 }
-body .container .main .card input {
+body .container .main .card .input {
   width: 100%;
   height: 100%;
   font-size: 1.5rem;
   margin-left: 1rem;
   border: none;
   outline: none;
+}
+body .container .main .card .input.highlight {
+  background-color: #121212;
+  color: wheat;
 }
 body .container .main .card.highlight {
   border: 2px solid #2e2e2e;

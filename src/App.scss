@@ -96,21 +96,32 @@ body {
           position: absolute;
           right: -8%;
           top: -120%;
-          transform: translateY(
-            -20px
-          ); // ！!todo 先預設位置，稍後設定好邏輯之後，在更改位置
+          transform: translateY(-20px);
           transition: all ease-in 0.5s;
-          &.show {
-            opacity: 1;
-            transform: translateY(0);
-          }
           button {
             border: 1px solid black;
             display: flex;
             width: 3rem;
             font-size: 1rem;
             padding: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: fadeInUp 0.3s ease forwards;
           }
+          button:nth-child(1) {
+            animation-delay: 0s;
+          }
+          button:nth-child(2) {
+            animation-delay: 0.1s;
+          }
+          button:nth-child(3) {
+            animation-delay: 0.2s;
+          }
+        }
+        &.slide-out {
+          transition: transform 0.4s ease, opacity 0.4s ease;
+          transform: translateX(-100%);
+          opacity: 0;
         }
       }
     }
@@ -159,5 +170,12 @@ body {
         background-color: #121212;
       }
     }
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

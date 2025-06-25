@@ -6,6 +6,7 @@ import {
   faPencil,
   faCheck,
   faEllipsis,
+  faL,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
 
@@ -34,7 +35,10 @@ function App() {
   const [check, setCheck] = useState([]);
   // 存放 點擊表單後開啟 的狀態
   const [ellipsis, setShowEllipsis] = useState(null);
-  // 存放 點選表單 的狀態
+  // 存放 刪除按鈕與刪除的 ID （ID不能共用 editID 嗎？）
+  const [deleteBtn, setDeleteBtn] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
+
   const show = false;
   // 設定 新增 Todo List 的 function
   const addFun = () => {
@@ -74,7 +78,7 @@ function App() {
       editInputRef.current.focus();
     }
   }, [editID]);
-  
+
   return (
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
@@ -88,7 +92,9 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
-            className={`card ${changeColor ? "highlight" : ""}`}
+            className={`card ${changeColor ? "highlight" : ""} ${
+              deletingId === todo.id ? "slide-out" : ""
+            }`}
             key={todo.id}
           >
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
@@ -147,12 +153,14 @@ function App() {
 
             {/* 當 todo.id === 目前要顯示的 ellipsis 的表單時，才會渲染版單 */}
             {ellipsis === todo.id && (
-              <div className={`ellipsisMenu ${show ? "show" : ""}`}>
+              <div className={`ellipsisMenu${show ? "show" : ""}`}>
                 {/* 編輯按鈕 */}
                 <button
                   onClick={() => {
-                    handleEdit(todo.id)
-                    setShowEllipsis(false);
+                    setEditID(todo.id);
+                    setShowEllipsis((prev) =>
+                      prev === todo.id ? "slide-out" : ""
+                    );
                   }}
                 >
                   <FontAwesomeIcon icon={faPencil} />
@@ -177,7 +185,10 @@ function App() {
 
                 <button
                   onClick={() => {
-                    removeCard(todo.id);
+                    setDeletingId(todo.id); // ⚠️ 加入刪除動畫
+                    setTimeout(() => {
+                      removeCard(todo.id); // ✅ 動畫後才移除
+                    }, 400); // 與動畫時間相同
                     setShowEllipsis(false);
                   }}
                 >

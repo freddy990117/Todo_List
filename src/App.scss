@@ -4,6 +4,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9f9f9;
+  transition: background-color ease-in-out 0.5s;
+  &.highlight {
+    background-color: #121212;
+  }
   .container {
     .title {
       .title-text {
@@ -15,6 +20,13 @@ body {
         background-clip: text;
         /* 把文字本身設為透明，這樣就能看到背景了 */
         color: transparent;
+
+        &.highlight {
+          background: linear-gradient(to right, #66ffe8, #00c7b1, #008c85);
+          background-clip: text;
+          /* 把文字本身設為透明，這樣就能看到背景了 */
+          color: transparent;
+        }
       }
     }
     .main {
@@ -22,17 +34,55 @@ body {
       width: 120%;
       transform: translateX(-10%);
       .card {
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 10vh;
         margin: 0.5rem;
         border: 2px solid green;
+        .input {
+          width: 100%;
+          height: 100%;
+          font-size: 1.5rem;
+          margin-left: 1rem;
+          border: none;
+          outline: none;
+          &.highlight {
+            background-color: #121212;
+            color: wheat;
+          }
+        }
+        &.error {
+          border: 2px solid red;
+          animation: error-message 1s ease-in-out 3;
+          animation: shake 0.4s ease-in-out 2;
+        }
+
+        &.highlight {
+          border: 2px solid #2e2e2e;
+        }
         .card-text {
           font-size: 1.5rem;
-          padding: 1rem;
+          opacity: 1;
+          transition: all ease-in-out 0.3s;
+          margin-left: 1rem;
+          border: none;
+          &.highlight {
+            color: #f0f0f0;
+            &.check {
+              text-decoration: line-through; // 加入刪除線
+              color: lightgray;
+              opacity: 0.3;
+            }
+          }
+          &.check {
+            text-decoration: line-through; // 加入刪除線
+            color: black;
+            opacity: 0.3;
+          }
         }
-        .remove {
+        .Ellipsis {
           margin-right: 1rem;
           font-size: 1.5rem;
           padding: 1rem;
@@ -41,6 +91,43 @@ body {
           background-color: transparent;
           border: 1px solid gray;
           cursor: pointer;
+          transition: all ease-in-out 0.5s;
+          &.highlight {
+            background-color: #c33a3a;
+            color: white;
+            border: none;
+          }
+        }
+        .ellipsisMenu {
+          position: absolute;
+          right: -8%;
+          top: -120%;
+          transform: translateY(-20px);
+          transition: all ease-in 0.5s;
+          button {
+            border: 1px solid black;
+            display: flex;
+            width: 3rem;
+            font-size: 1rem;
+            padding: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: fadeInUp 0.3s ease forwards;
+          }
+          button:nth-child(1) {
+            animation-delay: 0s;
+          }
+          button:nth-child(2) {
+            animation-delay: 0.1s;
+          }
+          button:nth-child(3) {
+            animation-delay: 0.2s;
+          }
+        }
+        &.slide-out {
+          transition: transform 0.4s ease, opacity 0.4s ease;
+          transform: translateX(-100%);
+          opacity: 0;
         }
       }
     }
@@ -51,12 +138,82 @@ body {
         font-size: 1.2rem;
         width: 70%;
         margin-right: 1rem;
+        transition: all ease-in-out 0.5s;
+        &.highlight {
+          background-color: #2e2e2e;
+          border: none;
+          color: white;
+          outline: none;
+          &::placeholder {
+            color: white;
+          }
+        }
       }
       .add-btn {
         padding: 1rem;
         font-size: 1.2rem;
         cursor: pointer;
+        transition: all ease-in-out 0.5s;
+        &.highlight {
+          background-color: #00c7b1;
+          color: white;
+          border: none;
+        }
+      }
+    }
+    .changeColor {
+      position: absolute;
+      border: none;
+      color: #121212;
+      background-color: #f9f9f9;
+      font-size: 2rem;
+      padding: 0.5rem;
+      right: 1%;
+      top: 2%;
+      transition: all ease-in-out 1s;
+      &.highlight {
+        color: #f9f9f9;
+        background-color: #121212;
       }
     }
   }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes error-message {
+  0%,
+  100% {
+    border-color: red;
+  }
+  50% {
+    border-color: lightpink;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.error-msg {
+  animation: shake 0.4s ease-in-out 2;
 }

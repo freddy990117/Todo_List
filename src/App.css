@@ -5,6 +5,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f9f9f9;
+  transition: background-color ease-in-out 0.5s;
+}
+body.highlight {
+  background-color: #121212;
 }
 body .container .title .title-text {
   font-weight: bolder;
@@ -17,12 +22,20 @@ body .container .title .title-text {
   /* 把文字本身設為透明，這樣就能看到背景了 */
   color: transparent;
 }
+body .container .title .title-text.highlight {
+  background: linear-gradient(to right, #66ffe8, #00c7b1, #008c85);
+  -webkit-background-clip: text;
+          background-clip: text;
+  /* 把文字本身設為透明，這樣就能看到背景了 */
+  color: transparent;
+}
 body .container .main {
   border: 1px solid gray;
   width: 120%;
   transform: translateX(-10%);
 }
 body .container .main .card {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,11 +43,47 @@ body .container .main .card {
   margin: 0.5rem;
   border: 2px solid green;
 }
+body .container .main .card .input {
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  border: none;
+  outline: none;
+}
+body .container .main .card .input.highlight {
+  background-color: #121212;
+  color: wheat;
+}
+body .container .main .card.error {
+  border: 2px solid red;
+  animation: error-message 1s ease-in-out 3;
+  animation: shake 0.4s ease-in-out 2;
+}
+body .container .main .card.highlight {
+  border: 2px solid #2e2e2e;
+}
 body .container .main .card .card-text {
   font-size: 1.5rem;
-  padding: 1rem;
+  opacity: 1;
+  transition: all ease-in-out 0.3s;
+  margin-left: 1rem;
+  border: none;
 }
-body .container .main .card .remove {
+body .container .main .card .card-text.highlight {
+  color: #f0f0f0;
+}
+body .container .main .card .card-text.highlight.check {
+  text-decoration: line-through;
+  color: lightgray;
+  opacity: 0.3;
+}
+body .container .main .card .card-text.check {
+  text-decoration: line-through;
+  color: black;
+  opacity: 0.3;
+}
+body .container .main .card .Ellipsis {
   margin-right: 1rem;
   font-size: 1.5rem;
   padding: 1rem;
@@ -43,6 +92,43 @@ body .container .main .card .remove {
   background-color: transparent;
   border: 1px solid gray;
   cursor: pointer;
+  transition: all ease-in-out 0.5s;
+}
+body .container .main .card .Ellipsis.highlight {
+  background-color: #c33a3a;
+  color: white;
+  border: none;
+}
+body .container .main .card .ellipsisMenu {
+  position: absolute;
+  right: -8%;
+  top: -120%;
+  transform: translateY(-20px);
+  transition: all ease-in 0.5s;
+}
+body .container .main .card .ellipsisMenu button {
+  border: 1px solid black;
+  display: flex;
+  width: 3rem;
+  font-size: 1rem;
+  padding: 1rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeInUp 0.3s ease forwards;
+}
+body .container .main .card .ellipsisMenu button:nth-child(1) {
+  animation-delay: 0s;
+}
+body .container .main .card .ellipsisMenu button:nth-child(2) {
+  animation-delay: 0.1s;
+}
+body .container .main .card .ellipsisMenu button:nth-child(3) {
+  animation-delay: 0.2s;
+}
+body .container .main .card.slide-out {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateX(-100%);
+  opacity: 0;
 }
 body .container .add-card {
   margin-top: 1rem;
@@ -52,9 +138,78 @@ body .container .add-card .todo-input {
   font-size: 1.2rem;
   width: 70%;
   margin-right: 1rem;
+  transition: all ease-in-out 0.5s;
+}
+body .container .add-card .todo-input.highlight {
+  background-color: #2e2e2e;
+  border: none;
+  color: white;
+  outline: none;
+}
+body .container .add-card .todo-input.highlight::-moz-placeholder {
+  color: white;
+}
+body .container .add-card .todo-input.highlight::placeholder {
+  color: white;
 }
 body .container .add-card .add-btn {
   padding: 1rem;
   font-size: 1.2rem;
   cursor: pointer;
+  transition: all ease-in-out 0.5s;
+}
+body .container .add-card .add-btn.highlight {
+  background-color: #00c7b1;
+  color: white;
+  border: none;
+}
+body .container .changeColor {
+  position: absolute;
+  border: none;
+  color: #121212;
+  background-color: #f9f9f9;
+  font-size: 2rem;
+  padding: 0.5rem;
+  right: 1%;
+  top: 2%;
+  transition: all ease-in-out 1s;
+}
+body .container .changeColor.highlight {
+  color: #f9f9f9;
+  background-color: #121212;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes error-message {
+  0%, 100% {
+    border-color: red;
+  }
+  50% {
+    border-color: lightpink;
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.error-msg {
+  animation: shake 0.4s ease-in-out 2;
 }/*# sourceMappingURL=App.css.map */

@@ -53,6 +53,12 @@ body {
             color: wheat;
           }
         }
+        &.error {
+          border: 2px solid red;
+          animation: error-message 1s ease-in-out 3;
+          animation: shake 0.4s ease-in-out 2;
+        }
+
         &.highlight {
           border: 2px solid #2e2e2e;
         }
@@ -178,4 +184,36 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes error-message {
+  0%,
+  100% {
+    border-color: red;
+  }
+  50% {
+    border-color: lightpink;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.error-msg {
+  animation: shake 0.4s ease-in-out 2;
 }

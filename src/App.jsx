@@ -8,7 +8,7 @@ import {
   faEllipsis,
   faL,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
@@ -38,7 +38,8 @@ function App() {
   // 存放 刪除按鈕與刪除的 ID （ID不能共用 editID 嗎？）
   const [deleteBtn, setDeleteBtn] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
-
+  // 存放 編輯時防止空白 的狀態
+  const [editErr, setEditErr] = useState(null);
   const show = false;
   // 設定 新增 Todo List 的 function
   const addFun = () => {
@@ -79,6 +80,14 @@ function App() {
     }
   }, [editID]);
 
+  // 只在 editErr 觸發時啟動
+  useMemo(() => {
+    // 解除 輸入空白的 DOM 綁定
+    setTimeout(() => {
+      setEditErr(null);
+    }, 2000);
+  }, [editErr]);
+
   return (
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
@@ -94,7 +103,7 @@ function App() {
             // Card 的邊框
             className={`card ${changeColor ? "highlight" : ""} ${
               deletingId === todo.id ? "slide-out" : ""
-            }`}
+            } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
           >
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
@@ -110,6 +119,11 @@ function App() {
                 // 偵測鍵盤的行為，當按下 Enter 時儲存編輯內容，並更新對應的 todo
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
+                    if (editText.trim() === "") {
+                      setEditErr(todo.id);
+                      return;
+                    }
+
                     // 建立一個新的 array，透過 map 對每一比資料比對
                     const updateEdit = data.map((item) =>
                       // 如果 item.id 與正在編輯的 todo.id 相同的話，就用編輯後的內容取代原本的文字

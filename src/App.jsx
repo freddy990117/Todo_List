@@ -6,9 +6,8 @@ import {
   faPencil,
   faCheck,
   faEllipsis,
-  faL,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
@@ -35,8 +34,7 @@ function App() {
   const [check, setCheck] = useState([]);
   // 存放 點擊表單後開啟 的狀態
   const [ellipsis, setShowEllipsis] = useState(null);
-  // 存放 刪除按鈕與刪除的 ID （ID不能共用 editID 嗎？）
-  const [deleteBtn, setDeleteBtn] = useState(false);
+  // 存放 刪除按鈕的 ID
   const [deletingId, setDeletingId] = useState(null);
   // 存放 編輯時防止空白 的狀態
   const [editErr, setEditErr] = useState(null);
@@ -80,12 +78,17 @@ function App() {
     }
   }, [editID]);
 
-  // 只在 editErr 觸發時啟動
-  useMemo(() => {
-    // 解除 輸入空白的 DOM 綁定
-    setTimeout(() => {
-      setEditErr(null);
-    }, 2000);
+  // 設定當 輸入值是空值 的行為
+  useEffect(() => {
+    // 檢查 現在是不是錯誤的狀態 （錯誤 => 輸入的是不是空值）
+    if (editErr !== null) {
+      // 如果是的話執行以下
+      const timer = setTimeout(() => {
+        setEditErr(null);
+      }, 2000);
+      // 清除監聽（否則會每次都執行一次）
+      return () => clearTimeout(timer);
+    }
   }, [editErr]);
 
   return (

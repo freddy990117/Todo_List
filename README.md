@@ -1,12 +1,12 @@
-# 📝 Project 4: React Todo List
+# 📝 Todo List
 
 這是一個使用 React 製作的 Todo List 專案，具備基本的任務管理功能，並搭配動畫與錯誤提示提升使用者體驗。
 
-## 🔧 技術棧
+## 🔧 技術
 
-- ⚛️ React (Hooks)
-- 💅 SCSS 模組化樣式設計
-- 🎨 FontAwesome Icons
+-  React (Hooks)
+-  SCSS
+-  FontAwesome Icons
 
 ---
 
@@ -46,7 +46,7 @@ Todo-List/
 
 ---
 
-## 📦 安裝與啟動
+## 📦 安裝與執行方式
 
 ```bash
 git clone https://github.com/your-username/todo-list.git

@@ -13,6 +13,7 @@
 ## 專案預覽
 
 ![demo](./demo.gif)
+
 [▶️ 點我看完整的展示影片](https://youtu.be/ybsd0ue6HcE)
 
 ## 📌 功能介紹

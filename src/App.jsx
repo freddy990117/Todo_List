@@ -17,7 +17,7 @@ function App() {
   // 存放 React 唯一值 （畫面 Render 也不改變）
   const idRef = useRef(0);
   // 存放 輸入 的唯一值
-  const inputRef = useRef(null);
+  const editInputRef = useRef(null);
   // 存放 變更顏色 的狀態
   const [changeColor, setChangeColor] = useState(false);
   // 存放 背景顏色的 DOM 元素
@@ -34,7 +34,10 @@ function App() {
   const [check, setCheck] = useState([]);
   // 存放 點擊表單後開啟 的狀態
   const [ellipsis, setShowEllipsis] = useState(null);
-  // 存放 點選表單 的狀態
+  // 存放 刪除按鈕的 ID
+  const [deletingId, setDeletingId] = useState(null);
+  // 存放 編輯時防止空白 的狀態
+  const [editErr, setEditErr] = useState(null);
   const show = false;
   // 設定 新增 Todo List 的 function
   const addFun = () => {
@@ -70,10 +73,23 @@ function App() {
 
   // 設定按下編輯按鈕時，自動跳到輸入框 (不用在自己點))
   useEffect(() => {
-    if (editID !== null && inputRef.current) {
-      inputRef.current.focus();
+    if (editID !== null && editInputRef.current) {
+      editInputRef.current.focus();
     }
   }, [editID]);
+
+  // 設定當 輸入值是空值 的行為
+  useEffect(() => {
+    // 檢查 現在是不是錯誤的狀態 （錯誤 => 輸入的是不是空值）
+    if (editErr !== null) {
+      // 如果是的話執行以下
+      const timer = setTimeout(() => {
+        setEditErr(null);
+      }, 2000);
+      // 清除監聽（否則會每次都執行一次）
+      return () => clearTimeout(timer);
+    }
+  }, [editErr]);
 
   return (
     <section className={"container"}>
@@ -88,14 +104,17 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
-            className={`card${changeColor ? "highlight" : ""}`}
+            className={`card ${changeColor ? "highlight" : ""} ${
+              deletingId === todo.id ? "slide-out" : ""
+            } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
           >
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
             {editID === todo.id ? (
               <input
                 id={todo.id}
-                className="input"
+                // 跟著背景顏色一起更改
+                className={`input ${changeColor ? "highlight" : ""}`}
                 //內容是綁定 div 中的文字
                 value={editText}
                 // 改變的文字榜定到 editText 中狀態
@@ -103,20 +122,25 @@ function App() {
                 // 偵測鍵盤的行為，當按下 Enter 時儲存編輯內容，並更新對應的 todo
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
+                    if (editText.trim() === "") {
+                      setEditErr(todo.id);
+                      return;
+                    }
+
                     // 建立一個新的 array，透過 map 對每一比資料比對
                     const updateEdit = data.map((item) =>
                       // 如果 item.id 與正在編輯的 todo.id 相同的話，就用編輯後的內容取代原本的文字
                       item.id === todo.id ? { ...item, text: editText } : item
                     );
-                    // 將資料返回初始值，並回傳資料給 Data
+                    // 設定輸入值為空值，再返回初始的 ID
                     setEditText("");
+                    // 將資料返回初始值，並回傳資料給 Data
                     setEditID(null);
                     setData(updateEdit);
-                    setCheck("");
                   }
                 }}
                 // 綁定 ref 狀態
-                ref={inputRef}
+                ref={editInputRef}
                 placeholder="按下 Enter 自動儲存....."
               />
             ) : (
@@ -127,9 +151,6 @@ function App() {
                   // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
                   check.includes(todo.id) ? "check" : ""
                 }`}
-                onChange={() => {
-                  setEditText(todo.text);
-                }}
               >
                 {todo.text}
               </div>
@@ -148,12 +169,14 @@ function App() {
 
             {/* 當 todo.id === 目前要顯示的 ellipsis 的表單時，才會渲染版單 */}
             {ellipsis === todo.id && (
-              <div className={`ellipsisMenu ${show ? "show" : ""}`}>
+              <div className={`ellipsisMenu${show ? "show" : ""}`}>
                 {/* 編輯按鈕 */}
                 <button
                   onClick={() => {
                     setEditID(todo.id);
-                    setShowEllipsis(false);
+                    setShowEllipsis((prev) =>
+                      prev === todo.id ? "slide-out" : ""
+                    );
                   }}
                 >
                   <FontAwesomeIcon icon={faPencil} />
@@ -178,7 +201,10 @@ function App() {
 
                 <button
                   onClick={() => {
-                    removeCard(todo.id);
+                    setDeletingId(todo.id); // ⚠️ 加入刪除動畫
+                    setTimeout(() => {
+                      removeCard(todo.id); // ✅ 動畫後才移除
+                    }, 400); // 與動畫時間相同
                     setShowEllipsis(false);
                   }}
                 >

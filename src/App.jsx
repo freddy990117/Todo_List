@@ -95,7 +95,7 @@ function App() {
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
       <section className="title">
-        <h1 className={`title-text${changeColor ? "highlight" : ""}`}>
+        <h1 className={`title-text ${changeColor ? "highlight" : ""}`}>
           Todo Application
         </h1>
       </section>
@@ -137,6 +137,7 @@ function App() {
                     // 將資料返回初始值，並回傳資料給 Data
                     setEditID(null);
                     setData(updateEdit);
+                    setCheck("");
                   }
                 }}
                 // 綁定 ref 狀態

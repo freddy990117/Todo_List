@@ -8,6 +8,7 @@ import {
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
+import React from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）

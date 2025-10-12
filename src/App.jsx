@@ -105,7 +105,7 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
-            className={`card ${changeColor ? "highlight" : ""} ${
+            className={`card ${changeColor ? "highlight" : ""}${
               deletingId === todo.id ? "slide-out" : ""
             } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
@@ -160,6 +160,7 @@ function App() {
 
             {/* 延伸項目的按鍵，點選後開啟延伸項目*/}
             <button
+              title="Ellipsis"
               className={`Ellipsis ${changeColor ? "highlight" : ""}`}
               onClick={() => {
                 // 控制表單的開啟，如果 === 表單的 id 則開啟，如果已有，則關閉。
@@ -174,6 +175,7 @@ function App() {
               <div className={`ellipsisMenu${show ? "show" : ""}`}>
                 {/* 編輯按鈕 */}
                 <button
+                  title="edit"
                   onClick={() => {
                     setEditID(todo.id);
                     setShowEllipsis((prev) =>
@@ -186,6 +188,7 @@ function App() {
                 {/* 勾選按鈕 */}
 
                 <button
+                  title="check"
                   onClick={() => {
                     setCheck((prev) =>
                       // 檢查目前的 check 清單中，是否已經包含被點擊的這一筆 todo.id
@@ -202,6 +205,7 @@ function App() {
                 {/* 刪除按鈕 */}
 
                 <button
+                  title="remove"
                   onClick={() => {
                     setDeletingId(todo.id); // ⚠️ 加入刪除動畫
                     setTimeout(() => {

@@ -96,7 +96,10 @@ function App() {
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
       <section className="title">
-        <h1 className={`title-text ${changeColor ? "highlight" : ""}`}>
+        <h1
+          className={`title-text ${changeColor ? "highlight" : ""}`}
+          aria-label="title"
+        >
           Todo Application
         </h1>
       </section>
@@ -105,11 +108,11 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
+            aria-label="card"
             className={`card ${changeColor ? "highlight" : ""}${
               deletingId === todo.id ? "slide-out" : ""
             } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
-            aria-label="card"
           >
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
             {editID === todo.id ? (
@@ -154,6 +157,7 @@ function App() {
                   // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
                   check.includes(todo.id) ? "check" : ""
                 }`}
+                aria-label="cardText"
               >
                 {todo.text}
               </div>
@@ -239,6 +243,7 @@ function App() {
         <button
           className={`add-btn ${changeColor ? "highlight" : ""}`}
           onClick={addFun}
+          aria-label="addBtn"
         >
           Add Todo
         </button>
@@ -250,6 +255,7 @@ function App() {
           setHighlight((prev) => !prev);
           setChangeColor((prev) => !prev);
         }}
+        aria-label="changeColor"
       >
         <FontAwesomeIcon icon={faPalette} />
       </button>

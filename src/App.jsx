@@ -109,6 +109,7 @@ function App() {
               deletingId === todo.id ? "slide-out" : ""
             } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
+            aria-label="card"
           >
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
             {editID === todo.id ? (

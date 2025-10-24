@@ -71,7 +71,7 @@ describe("3.測試表單開啟之後的行為", () => {
     const removebtn = screen.getByLabelText("remove");
     // 模擬使用者點擊刪除的行為
     await userEvent.click(removebtn);
-    // 該條 DOM 元素是否已不再畫面上
+    // 該條 DOM 元素是否已不再畫面上 (因為有 setTimeout 的設定，所以需使用 waitFor 等待後再查看)
     await waitFor(() => {
       expect(screen.queryByText("今天記得刷載具")).not.toBeInTheDocument();
     });
@@ -96,5 +96,26 @@ describe("3.測試表單開啟之後的行為", () => {
     await userEvent.keyboard("{enter}");
     // DOM 元素中是否有更改後的文字
     expect(screen.getByText("今天已經刷過載具了"));
+  });
+  test("3-4.測試儲存如果是空格是否有出現錯誤", async () => {
+    const editbtn = screen.getByLabelText("edit");
+    // 模擬使用者點擊編輯的行為
+    await userEvent.click(editbtn);
+    // 取得輸入框框
+    const inputText = screen.getByPlaceholderText("按下 Enter 自動儲存.....");
+    // 模擬使用者輸入表單並按下 Enter
+    const cardClass = screen.getByLabelText("card");
+    await userEvent.clear(inputText); // 確認輸入框是空的
+    await userEvent.keyboard("{enter}");
+    // DOM 元素中是否有出現 error
+    expect(cardClass).toHaveClass("error");
+
+    // error 設定兩秒後消失，確認是否會消失
+    await waitFor(
+      () => {
+        expect(cardClass).not.toHaveClass("error");
+      },
+      { timeout: 2500 }
+    );
   });
 });

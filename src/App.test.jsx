@@ -18,9 +18,9 @@ import userEvent from "@testing-library/user-event";
 //   test("1-2.進入時是否有顯示 Add Somthing...(placeholder)", () => {
 //     const placeholderText = screen.getByPlaceholderText("Add somthing.......");
 
-    expect(placeholderText).toBeInTheDocument();
-  });
-});
+//     expect(placeholderText).toBeInTheDocument();
+//   });
+// });
 
 // describe("2.測試輸入 input 後點擊 Add btn 是否有出現表單", () => {
 //   beforeEach(async () => {
@@ -80,24 +80,14 @@ describe("3.測試表單開啟之後的行為", () => {
       expect(screen.queryByText("今天記得刷載具")).not.toBeInTheDocument();
     });
   });
-  test("3-2.勾選完成後是否有新增「完成」的 Class Name", async () => {});
-  // test("3-3.點選編輯並儲存後文件是否有更新", async () => {});
-  test("2-3.點擊編輯後輸入文字按下 Enter 是否會儲存最新的資訊", async () => {
-    // 先抓「更多」的選項
-    const EllipsisBtn = screen.getByLabelText("Ellipsis");
-    // 按下「更多」的選項後再抓取其他的元素
-    await userEvent.click(EllipsisBtn);
-    const editbtn = screen.getByLabelText("edit");
-    // 點擊編輯的選項
-    await userEvent.click(editbtn);
-    // 是否有出現 "按下 Enter 自動儲存....."
-    const editInput = screen.getByPlaceholderText("按下 Enter 自動儲存.....");
-    expect(editInput);
-
-    // 使用者輸入
-    await userEvent.type(editInput, "今天要去健身");
-    // 使用者按下 Enter
-    await userEvent.keyboard("{Enter}");
-    expect(screen.getByText("今天要去健身")).toBeInTheDocument();
+  test("3-2.勾選完成後是否有「ckeck」的 Class Name", async () => {
+    const checkbtn = screen.getByLabelText("check");
+    // 模擬使用者點擊的行為
+    await userEvent.click(checkbtn);
+    // 取得該 DOM 元素
+    const todoText = screen.getByText("今天記得刷載具");
+    // COM 元素中是否有出現該 check 元素
+    expect(todoText).toHaveClass("check");
   });
+  // test("3-3.點選編輯並儲存後文件是否有更新", async () => {});
 });

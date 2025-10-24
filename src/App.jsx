@@ -117,6 +117,7 @@ function App() {
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
             {editID === todo.id ? (
               <input
+                aria-label="inputText"
                 id={todo.id}
                 // 跟著背景顏色一起更改
                 className={`input ${changeColor ? "highlight" : ""}`}

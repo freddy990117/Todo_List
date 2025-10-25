@@ -140,11 +140,17 @@ describe("3.測試表單開啟之後的行為", () => {
       expect(cardText).not.toHaveClass("check");
     });
   });
-  // test("3-7.測試點擊第二次更多選項後是否會消失", async () => {
-  //   const EllipsisBtn = screen.getByLabelText("Ellipsis");
-  //   await userEvent.click(EllipsisBtn);
-  //   // 要先去命名 ellipsisMenu 的 label name，但我要去洗洗睡了 (⁰▿⁰)
-  // });
+  test("3-7.測試點擊第二次更多選項後是否會消失", async () => {
+    // 找到表單開啟的菜單
+    const ellipsisMenu = screen.getByLabelText("ellipsisMenu");
+    // 確認有出現在文件上
+    expect(ellipsisMenu).toBeInTheDocument();
+    const EllipsisBtn = screen.getByLabelText("Ellipsis");
+    // 再點一次更多選項的按鈕
+    await userEvent.click(EllipsisBtn);
+    // 確認已消失在文件上
+    expect(ellipsisMenu).not.toBeInTheDocument();
+  });
 });
 describe("4.點選變更顏色後，顏色是否都有變更", () => {
   beforeEach(() => {

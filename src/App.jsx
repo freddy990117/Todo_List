@@ -8,6 +8,7 @@ import {
   faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
+import React from "react";
 
 function App() {
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
@@ -95,7 +96,10 @@ function App() {
     <section className={"container"}>
       {/* Title 的文字（Todo Application） */}
       <section className="title">
-        <h1 className={`title-text ${changeColor ? "highlight" : ""}`}>
+        <h1
+          className={`title-text ${changeColor ? "highlight" : ""}`}
+          aria-label="title"
+        >
           Todo Application
         </h1>
       </section>
@@ -104,7 +108,8 @@ function App() {
         {data.map((todo) => (
           <div
             // Card 的邊框
-            className={`card ${changeColor ? "highlight" : ""} ${
+            aria-label="card"
+            className={`card ${changeColor ? "highlight" : ""}${
               deletingId === todo.id ? "slide-out" : ""
             } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
@@ -152,6 +157,7 @@ function App() {
                   // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
                   check.includes(todo.id) ? "check" : ""
                 }`}
+                aria-label="cardText"
               >
                 {todo.text}
               </div>
@@ -159,6 +165,7 @@ function App() {
 
             {/* 延伸項目的按鍵，點選後開啟延伸項目*/}
             <button
+              aria-label="Ellipsis"
               className={`Ellipsis ${changeColor ? "highlight" : ""}`}
               onClick={() => {
                 // 控制表單的開啟，如果 === 表單的 id 則開啟，如果已有，則關閉。
@@ -170,9 +177,10 @@ function App() {
 
             {/* 當 todo.id === 目前要顯示的 ellipsis 的表單時，才會渲染版單 */}
             {ellipsis === todo.id && (
-              <div className={`ellipsisMenu${show ? "show" : ""}`}>
+              <div className={`ellipsisMenu`} aria-label="ellipsisMenu">
                 {/* 編輯按鈕 */}
                 <button
+                  aria-label="edit"
                   onClick={() => {
                     setEditID(todo.id);
                     setShowEllipsis((prev) =>
@@ -185,6 +193,7 @@ function App() {
                 {/* 勾選按鈕 */}
 
                 <button
+                  aria-label="check"
                   onClick={() => {
                     setCheck((prev) =>
                       // 檢查目前的 check 清單中，是否已經包含被點擊的這一筆 todo.id
@@ -201,6 +210,7 @@ function App() {
                 {/* 刪除按鈕 */}
 
                 <button
+                  aria-label="remove"
                   onClick={() => {
                     setDeletingId(todo.id); // ⚠️ 加入刪除動畫
                     setTimeout(() => {
@@ -228,11 +238,13 @@ function App() {
           onChange={(e) => setInputValue(e.target.value)}
           // 監測鍵盤的輸入
           onKeyDown={handleKeyDown}
+          aria-label="inputText"
         />
         {/* Add todo button */}
         <button
           className={`add-btn ${changeColor ? "highlight" : ""}`}
           onClick={addFun}
+          aria-label="addBtn"
         >
           Add Todo
         </button>
@@ -244,6 +256,7 @@ function App() {
           setHighlight((prev) => !prev);
           setChangeColor((prev) => !prev);
         }}
+        aria-label="changeColor"
       >
         <FontAwesomeIcon icon={faPalette} />
       </button>

@@ -11,34 +11,44 @@ import { useState, useRef, useEffect } from "react";
 import React from "react";
 
 function App() {
+  interface todoItem {
+    id: number;
+    text: string;
+    isComplete: boolean;
+  }
+
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<todoItem[]>([]);
   // 紀錄使用者輸入的狀態
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
   // 存放 React 唯一值 （畫面 Render 也不改變）
-  const idRef = useRef(0);
+  const idRef = useRef<number>(0);
   // 存放 輸入 的唯一值
-  const editInputRef = useRef(null);
+  const editInputRef = useRef<HTMLInputElement>(null);
   // 存放 變更顏色 的狀態
-  const [changeColor, setChangeColor] = useState(false);
+  const [changeColor, setChangeColor] = useState<boolean>(false);
   // 存放 背景顏色的 DOM 元素
-  const [highlight, setHighlight] = useState(false);
+  const [highlight, setHighlight] = useState<boolean>(false);
   // JSX 無法辨識到 body DOM，所以使用 JS 的方式找到 body 的元素並賦值
   useEffect(() => {
     document.body.classList.toggle("highlight", highlight);
   }, [highlight]);
   // 存放 識別ID 的狀態，預設無狀態 （點選編輯的按鈕時觸發）
-  const [editID, setEditID] = useState(null);
+  const [editID, setEditID] = useState<number | string | null>(null);
   // 存放 編輯後的文字 狀態 （點選編輯的按鈕時觸發）
-  const [editText, setEditText] = useState("");
+  const [editText, setEditText] = useState<string>("");
   // 存放 完成 的狀態
-  const [check, setCheck] = useState([]);
+  const [check, setCheck] = useState<number[]>([]);
   // 存放 點擊表單後開啟 的狀態
-  const [ellipsis, setShowEllipsis] = useState(null);
+  const [ellipsis, setShowEllipsis] = useState<number | boolean | null>(null);
+
+  const [ellipsisAnimation, setEllipsisAnimation] = useState<"slide-out" | "">(
+    "",
+  );
   // 存放 刪除按鈕的 ID
-  const [deletingId, setDeletingId] = useState(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   // 存放 編輯時防止空白 的狀態
-  const [editErr, setEditErr] = useState(null);
+  const [editErr, setEditErr] = useState<number | null>(null);
   const show = false;
   // 設定 新增 Todo List 的 function
   const addFun = () => {
@@ -61,12 +71,12 @@ function App() {
   };
 
   // 偵測鍵盤的行為，當按下 Enter 時執行
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") addFun();
   };
 
   // 移除行為 (依照 id 來移除 DOM 元素)
-  const removeCard = (id) => {
+  const removeCard = (id: number) => {
     // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 是因為改的會是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
     const newData = data.filter((item) => item.id !== id);
     setData(newData);
@@ -117,7 +127,7 @@ function App() {
             {/* 如果 ID 相符的話，就執行更改的邏輯 */}
             {editID === todo.id ? (
               <input
-                id={todo.id}
+                id={todo.id.toString()}
                 // 跟著背景顏色一起更改
                 className={`input ${changeColor ? "highlight" : ""}`}
                 //內容是綁定 div 中的文字
@@ -135,7 +145,7 @@ function App() {
                     // 建立一個新的 array，透過 map 對每一比資料比對
                     const updateEdit = data.map((item) =>
                       // 如果 item.id 與正在編輯的 todo.id 相同的話，就用編輯後的內容取代原本的文字
-                      item.id === todo.id ? { ...item, text: editText } : item
+                      item.id === todo.id ? { ...item, text: editText } : item,
                     );
                     // 設定輸入值為空值，再返回初始的 ID
                     setEditText("");
@@ -183,9 +193,10 @@ function App() {
                   aria-label="edit"
                   onClick={() => {
                     setEditID(todo.id);
-                    setShowEllipsis((prev) =>
-                      prev === todo.id ? "slide-out" : ""
+                    setEllipsisAnimation(
+                      ellipsis === todo.id ? "slide-out" : "",
                     );
+                    setShowEllipsis(todo.id);
                   }}
                 >
                   <FontAwesomeIcon icon={faPencil} />
@@ -201,7 +212,7 @@ function App() {
                         ? // 如果有：代表使用者是在取消勾選
                           prev.filter((id) => id !== todo.id)
                         : // 如果沒有：代表使用者要勾選這一筆, 把 todo.id 加入到 check 陣列中，並回傳新的陣列
-                          [...prev, todo.id]
+                          [...prev, todo.id],
                     );
                   }}
                 >

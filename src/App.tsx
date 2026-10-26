@@ -9,16 +9,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef, useEffect } from "react";
 import React from "react";
-
+interface TodoItem {
+  id: number;
+  text: string;
+  isComplete: boolean;
+}
 function App() {
-  interface todoItem {
-    id: number;
-    text: string;
-    isComplete: boolean;
-  }
-
   // 紀錄 todo list 的資料存放狀態（ 會是一個 array ）
-  const [data, setData] = useState<todoItem[]>([]);
+  const [data, setData] = useState<TodoItem[]>([]);
   // 紀錄使用者輸入的狀態
   const [inputValue, setInputValue] = useState<string>("");
   // 存放 React 唯一值 （畫面 Render 也不改變）
@@ -34,32 +32,28 @@ function App() {
     document.body.classList.toggle("highlight", highlight);
   }, [highlight]);
   // 存放 識別ID 的狀態，預設無狀態 （點選編輯的按鈕時觸發）
-  const [editID, setEditID] = useState<number | string | null>(null);
+  const [editID, setEditID] = useState<number | null>(null);
   // 存放 編輯後的文字 狀態 （點選編輯的按鈕時觸發）
   const [editText, setEditText] = useState<string>("");
   // 存放 完成 的狀態
-  const [check, setCheck] = useState<number[]>([]);
   // 存放 點擊表單後開啟 的狀態
-  const [ellipsis, setShowEllipsis] = useState<number | boolean | null>(null);
+  const [ellipsis, setShowEllipsis] = useState<number | null>(null);
 
-  const [ellipsisAnimation, setEllipsisAnimation] = useState<"slide-out" | "">(
-    "",
-  );
   // 存放 刪除按鈕的 ID
   const [deletingId, setDeletingId] = useState<number | null>(null);
   // 存放 編輯時防止空白 的狀態
   const [editErr, setEditErr] = useState<number | null>(null);
-  const show = false;
   // 設定 新增 Todo List 的 function
   const addFun = () => {
+    const text = inputValue.trim();
     // 如果 inputValue 是空值的話，返回空值
-    if (inputValue === "") return "";
+    if (text === "") return;
 
     const todoData = {
       // id 設定不會改變的 useRef 值
       id: idRef.current++,
       // 值是使用者輸入的資訊
-      text: inputValue,
+      text,
       // 是否完成
       isComplete: false,
     };
@@ -78,8 +72,7 @@ function App() {
   // 移除行為 (依照 id 來移除 DOM 元素)
   const removeCard = (id: number) => {
     // 過濾 id，如果 id 沒有被點擊，則加入 data 中 (不使用 splice 是因為改的會是原資料，React 無法正確偵測畫面是否需要更新 (直接改 data 的值，所以不會重新渲染))
-    const newData = data.filter((item) => item.id !== id);
-    setData(newData);
+    setData((prev) => prev.filter((item) => item.id !== id));
   };
 
   // 設定按下編輯按鈕時，自動跳到輸入框 (不用在自己點))
@@ -120,7 +113,7 @@ function App() {
             // Card 的邊框
             aria-label="card"
             className={`card ${changeColor ? "highlight" : ""}${
-              deletingId === todo.id ? "slide-out" : ""
+              deletingId === todo.id ? " slide-out" : ""
             } ${editErr === todo.id ? "error" : ""}`}
             key={todo.id}
           >
@@ -152,7 +145,6 @@ function App() {
                     // 將資料返回初始值，並回傳資料給 Data
                     setEditID(null);
                     setData(updateEdit);
-                    setCheck([]);
                   }
                 }}
                 // 綁定 ref 狀態
@@ -165,7 +157,7 @@ function App() {
                 // Card 內文的設定
                 className={`card-text ${changeColor ? "highlight" : ""} ${
                   // check 狀態中是否有包含 todo.id，有則回傳 "check"，沒有則是空白
-                  check.includes(todo.id) ? "check" : ""
+                  todo.isComplete ? "check" : ""
                 }`}
                 aria-label="cardText"
               >
@@ -193,9 +185,7 @@ function App() {
                   aria-label="edit"
                   onClick={() => {
                     setEditID(todo.id);
-                    setEllipsisAnimation(
-                      ellipsis === todo.id ? "slide-out" : "",
-                    );
+                    setEditText(todo.text);
                     setShowEllipsis(todo.id);
                   }}
                 >
@@ -206,13 +196,12 @@ function App() {
                 <button
                   aria-label="check"
                   onClick={() => {
-                    setCheck((prev) =>
-                      // 檢查目前的 check 清單中，是否已經包含被點擊的這一筆 todo.id
-                      prev.includes(todo.id)
-                        ? // 如果有：代表使用者是在取消勾選
-                          prev.filter((id) => id !== todo.id)
-                        : // 如果沒有：代表使用者要勾選這一筆, 把 todo.id 加入到 check 陣列中，並回傳新的陣列
-                          [...prev, todo.id],
+                    setData((prev) =>
+                      prev.map((item) =>
+                        item.id === todo.id
+                          ? { ...item, isComplete: !item.isComplete }
+                          : item,
+                      ),
                     );
                   }}
                 >
@@ -227,7 +216,7 @@ function App() {
                     setTimeout(() => {
                       removeCard(todo.id); // ✅ 動畫後才移除
                     }, 400); // 與動畫時間相同
-                    setShowEllipsis(false);
+                    setShowEllipsis(null);
                   }}
                 >
                   <FontAwesomeIcon icon={faTrash} />

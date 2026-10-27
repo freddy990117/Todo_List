@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom"; // 加入這行才能用 toBeInTheDocument
 import App from "./App";
@@ -28,7 +27,7 @@ describe("2.測試:輸入完成後是否有出現表單", () => {
   beforeEach(async () => {
     render(<App />);
     const placeholderTextText = screen.getByPlaceholderText(
-      "Add somthing......."
+      "Add somthing.......",
     );
     const addbtn = screen.getByText("Add Todo");
 
@@ -59,7 +58,7 @@ describe("3.測試:表單的「更多選項」行為", () => {
   beforeEach(async () => {
     render(<App />);
     const placeholderTextText = screen.getByPlaceholderText(
-      "Add somthing......."
+      "Add somthing.......",
     );
     const addbtn = screen.getByText("Add Todo");
     // 模擬使用者輸入的行為
@@ -97,10 +96,11 @@ describe("3.測試:表單的「更多選項」行為", () => {
     const placeholderTextText =
       screen.getByPlaceholderText("按下 Enter 自動儲存.....");
     // 模擬使用者輸入表單並按下 Enter
+    await userEvent.clear(placeholderTextText);
     await userEvent.type(placeholderTextText, "今天已經刷過載具了");
     await userEvent.keyboard("{enter}");
     // DOM 元素中是否有更改後的文字
-    expect(screen.getByText("今天已經刷過載具了"));
+    expect(screen.getByText("今天已經刷過載具了")).toBeInTheDocument();
   });
   test("3-4.儲存時是空格是否有出現錯誤", async () => {
     const editbtn = screen.getByLabelText("edit");
@@ -121,7 +121,7 @@ describe("3.測試:表單的「更多選項」行為", () => {
       () => {
         expect(cardClass).not.toHaveClass("error");
       },
-      { timeout: 2100 } // 設定最多等待 2.1 秒後檢查
+      { timeout: 2100 }, // 設定最多等待 2.1 秒後檢查
     );
   });
   test("3-5.編輯時是否會自動 focus 到輸入框", async () => {
@@ -160,7 +160,7 @@ describe("4.測試:點選變更顏色後，顏色是否都有變更", () => {
     // 找到各個元素
     const titleText = screen.getByLabelText("title");
     const placeholderTextText = screen.getByPlaceholderText(
-      "Add somthing......."
+      "Add somthing.......",
     );
     const addBtn = screen.getByLabelText("addBtn");
 

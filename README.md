@@ -59,11 +59,22 @@ Todo_List/
 
 ## 📋 測試與檢查
 
-測試範圍包含任務新增、編輯、刪除及狀態切換等功能。
+本專案使用 Jest 搭配 React Testing Library 進行元件測試，並透過 Coverage 報告檢視程式碼的測試涵蓋範圍。
+（測試範圍包含任務新增、編輯、刪除及狀態切換等功能)
 
-本專案使用 Jest 搭配 React Testing Library，測試 React 元件的使用者互動與畫面更新。
+📊 測試覆蓋率
 
 ```bash
+| 測試指標 | 覆蓋率 (執行情況) |
+
+| Statements | 98.46% (64/65) |
+
+| Branches | 91.30% (42/46) |
+
+| Functions | 100% (27/27) |
+
+| Lines | 100% (57/57) |
+
 # 執行測試並產生 Coverage 報告
 npm test
 
